@@ -20,6 +20,24 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+const favoritos = [{ id: 1, nome: 'Google', url: 'http://www.google.com', importante: true }]
+
 Route.get('/', async () => {
-  return { hello: 'world' }
+  return { app: 'favio-back' }
+})
+
+Route.get('/favoritos', async () => {
+  return favoritos
+})
+
+Route.get('/favoritos/:id', async ({ params }) => {
+  //retornar o objeto caso exista, senão retornar o objeto vazio {}
+  //função callback
+  let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
+  console.log(favoritoEncontrado)
+  return favoritoEncontrado
+})
+
+Route.get('/favoritos/:nome', async ({ params }) => {
+  return { nome: params.nome, url: 'http://www.google.com', importante: true }
 })
