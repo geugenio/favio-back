@@ -34,6 +34,8 @@ Route.get('/favoritos/:id', async ({ params }) => {
   //retornar o objeto caso exista, senão retornar o objeto vazio {}
   //função callback
   let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
+  if favoritoEncontrado == undefined
+    return{msg: "favorito nao encontrado"}
   console.log(favoritoEncontrado)
   return favoritoEncontrado
 })
