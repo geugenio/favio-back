@@ -25,13 +25,21 @@ export default class FavoritosController {
   public async update({ request, params, response }: HttpContextContract) {
     const { nome, url, importante } = request.body()
     let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
-    if (!favoritoEncontrado) return response.status(404)
-    favoritoEncontrado.nome = nome
-    favoritoEncontrado.url = url
-    favoritoEncontrado.importante = importante
-
-    favoritos[params.id] = favoritoEncontrado
-    return response.status(200).send(favoritoEncontrado)
+    if (!favoritoEncontrado){
+      return response.status(404)
+    } else {
+      if(nome !=undefined) {
+        favoritoEncontrado.nome = nome
+      }
+      if (url !=undefined){
+        favoritoEncontrado.url = url
+      }
+      if (importante !=undefined){
+        favoritoEncontrado.importante = importante
+      }
+      favoritos[params.id] = favoritoEncontrado
+      return response.status(200).send(favoritoEncontrado)
+    }
   }
 
   public async destroy({params, response}: HttpContextContract) {

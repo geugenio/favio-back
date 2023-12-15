@@ -69,9 +69,9 @@ Route.delete('/favoritos/:id', async ({response, params})=>{
 
 Route.put('/favoritos/:id', async ({response, params, request}) =>{
   const{nome,url,importante} = request.body()
-  let favorito = favoritos.find((favorito) => favoritos.id == params.id)
-  if (favorito!=undefined){
-    const indice = favoritos.indexOf(favorito)
+  let encontrado = favoritos.find((favorito) => favoritos.id == params.id)
+  if (encontrado!=undefined){
+    const indice = favoritos.indexOf(encontrado)
     if(nome != null) {
       favoritos[indice].nome = nome
     }
@@ -81,7 +81,6 @@ Route.put('/favoritos/:id', async ({response, params, request}) =>{
     if (importante !=null) {
       favoritos[indice].importante = importante
     }
-
     return response.status(200)
   } else {
     return response.status(404)
