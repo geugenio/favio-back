@@ -37,7 +37,6 @@ export default class FavoritosController {
       if (importante !=undefined){
         favoritoEncontrado.importante = importante
       }
-      favoritos[params.id] = favoritoEncontrado
       return response.status(200).send(favoritoEncontrado)
     }
   }
