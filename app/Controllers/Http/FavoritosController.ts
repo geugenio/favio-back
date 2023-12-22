@@ -1,51 +1,50 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-const favoritos = [{id: 1, nome: 'IFRN', url: 'www.ifrn.edu.br', importante: false }]
+import Favorito from 'App/Models/Favorito'
+import { DateTime } from 'luxon'
 export default class FavoritosController {
   public async index({}: HttpContextContract) {
-    return favoritos
+    return Favorito.all()
   }
 
   public async create({}: HttpContextContract) {}
 
   public async store({ request, response }: HttpContextContract) {
-    const{nome,url,importante} = request.body()
-    const newFavorito = {id:favoritos.length+1,nome,url,importante}
-    favoritos.push(newFavorito)
+    const { nome, url, importante } = request.body()
+    const newFavorito = { nome, url, importante }
+    Favorito.create(newFavorito)
     return response.status(201).send(newFavorito)
   }
 
   public async show({ params, response }: HttpContextContract) {
-    //retornar o objeto caso exista, senao retornar objeto va
-    //função callback
-    let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
-    if favoritoEncontrado == undefined
-      return response.status(404)
+    let favoritoEncontrado = await Favorito.findByOrFail('id', params.id)
+    if (favoritoEncontrado === undefined) return response.status(404)
     return favoritoEncontrado
   }
   public async update({ request, params, response }: HttpContextContract) {
     const { nome, url, importante } = request.body()
-    let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
-    if (!favoritoEncontrado){
+    let favoritoEncontrado = await Favorito.findByOrFail('id', params.id)
+    if (!favoritoEncontrado) {
       return response.status(404)
     } else {
-      if(nome !=undefined) {
+      if (nome !== undefined) {
         favoritoEncontrado.nome = nome
       }
-      if (url !=undefined){
+      if (url !== undefined) {
         favoritoEncontrado.url = url
       }
-      if (importante !=undefined){
+      if (importante !== undefined) {
         favoritoEncontrado.importante = importante
       }
+      await favoritoEncontrado.save()
+      await favoritoEncontrado.merge({ updatedAt: DateTime.local() }).save()
       return response.status(200).send(favoritoEncontrado)
     }
   }
 
-  public async destroy({params, response}: HttpContextContract) {
-    let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
-    if(!favoritoEncontrado)
-      return response.status(404)
-    favoritos.splice(favoritos.indexOf(favoritoEncontrado),1)
+  public async destroy({ params, response }: HttpContextContract) {
+    let favoritoEncontrado = await Favorito.findByOrFail('id', params.id)
+    if (!favoritoEncontrado) return response.status(404)
+    favoritoEncontrado.delete()
     return response.status(204)
   }
 }

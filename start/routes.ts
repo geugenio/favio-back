@@ -86,4 +86,4 @@ Route.put('/favoritos/:id', async ({response, params, request}) =>{
     return response.status(404)
   }
 })
-Route.resource('favoritao', 'favoritosController').apiOnly
+Route.resource('favoritao', 'FavoritosController').apiOnly
