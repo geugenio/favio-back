@@ -47,11 +47,23 @@ Route.get('/favoritos/:nome', async ({ params }) => {
 
 Route.post('/favoritos', async ({request, response})=>{
   const{nome,url,importante} = request.body()
-  const newFavorito = {id:favoritos.length+1,nome,url,importante}
-  favoritos.push(newFavorito)
-  return response.status(201).send(newFavorito)
+  if (nome === undefined || url === undefined || importante === undefined) {
+    return response.status(400)
+  } else {
+    const newFavorito = {id:favoritos.length+1,nome,url,importante}
+    favoritos.push(newFavorito)
+    return response.status(201).send(newFavorito)
+  }
+
 })
 //Rota post para criar um novo favorito
+
+
+
+
+
+
+
 
 
 
