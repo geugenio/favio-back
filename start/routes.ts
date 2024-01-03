@@ -70,7 +70,7 @@ Route.delete('/favoritos/:id', async ({ response, params }) => {
 
 Route.put('/favoritos/:id', async ({ response, params, request }) => {
   const { nome, url, importante } = request.body()
-  let encontrado = favoritos.find((favorito) => favoritos.id === params.id)
+  let encontrado = favoritos.find((favorito) => favorito.id === params.id)
   if (encontrado !== undefined) {
     const indice = favoritos.indexOf(encontrado)
     if (nome !== null) {
